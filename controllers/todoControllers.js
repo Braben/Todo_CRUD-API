@@ -3,7 +3,7 @@ const Todo = require("../models/todo_model");
 const createTodo = async (req, res) => {
   const todoDetails = req.body;
   try {
-    const result = await TodoModel.create(todoDetails);
+    const result = await Todo.create(todoDetails);
     res.send({
       success: true,
       message: "Todo App Created successfully",
