@@ -1,9 +1,25 @@
 const Todo = require("../models/todo_model");
+const { validationResult } = require("express-validator");
 
 const createTodo = async (req, res) => {
-  const todoDetails = req.body;
+  //CHECK FOR ERRORS
+  const errors = validationResult(req);
+  console.log(errors);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array()[0].msg,
+    });
+  }
+
+  //if no errors
+  //get data from body
+  const { title, priority, deadline } = req.body;
   try {
-    const result = await Todo.create(todoDetails);
+    const result = await Todo.create({
+      title,
+      priority,
+      deadline,
+    });
     res.send({
       success: true,
       message: "Todo App Created successfully",
