@@ -27,13 +27,13 @@ const validateTodo = [
     .trim()
     .notEmpty()
     .withMessage("Deadline is required")
-    .isDate(yyyy - mm - dd)
+    .isDate("yyyy - mm - dd")
     .withMessage("Deadline must be a valid date"),
 ];
 
 Router.post("/createtodos", validateTodo, createTodo);
 
-Router.patch("/todos/:_id", updateTodo);
+Router.patch("/todos/:_id", validateTodo, updateTodo);
 
 Router.delete("/delete/:_id", deleteTodo);
 

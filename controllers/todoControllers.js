@@ -71,7 +71,7 @@ const retrieveTodos = (req, res) => {
         console.log(err);
         res.send({
           success: false,
-          message: `Failed to retrieve todos successfully`,
+          message: "Failed to retrieve todos successfully",
           data: result,
         });
       });
