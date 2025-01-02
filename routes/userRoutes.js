@@ -1,7 +1,10 @@
 const express = require("express");
 const userModel = require("../models/userModel");
 const router = express.Router();
-const { signUpController } = require("../controllers/userController");
+const {
+  signUpController,
+  signInController,
+} = require("../controllers/userController");
 const { body } = require("express-validator");
 
 // Validate user input
@@ -24,6 +27,23 @@ const validateUser = [
     .isLength({ min: 6 })
     .withMessage("Password is required and must be at least 6 characters long"),
 ];
+const validateUsersignin = [
+  body("email").trim().isEmail().withMessage("Email is required"),
+  // Check if email already exists
+  // .custom(async (email) => {
+  //   const existingUser = await userModel.findOne({ email });
+
+  //   if (existingUser) {
+  //     Promise.resolve("User found");
+  //   }
+  // }),
+  body("password")
+    .trim()
+    .isLength({ min: 6 })
+    .withMessage("Password is required and must be at least 6 characters long"),
+];
+
 // Create a new user
 router.put("/signup", validateUser, signUpController);
+router.post("/signin", validateUsersignin, signInController);
 module.exports = router;

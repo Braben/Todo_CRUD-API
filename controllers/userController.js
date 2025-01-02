@@ -48,6 +48,41 @@ const signUpController = (req, res) => {
     });
 };
 
+// Sign in a user
+// async await
+const signInController = async (req, res) => {
+  try {
+    // Validate input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors);
+      return res.status(400).json({ errors: errors.array()[0].msg });
+    }
+    // Get data from body
+    const { email, password } = req.body;
+    // Find the user
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Compare the password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Password Invalid" });
+    }
+    // Successful sign-in
+    res.status(200).json({
+      message: "User signed in successfully",
+      Name: user.name,
+      Email: user.email,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred during sign-in" });
+  }
+};
+
 module.exports = {
   signUpController,
+  signInController,
 };
