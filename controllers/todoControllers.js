@@ -1,4 +1,4 @@
-const Todo = require("../models/todo_model");
+const Todo = require("../models/todoModel");
 const { validationResult } = require("express-validator");
 
 const createTodo = async (req, res) => {

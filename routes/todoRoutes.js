@@ -1,6 +1,6 @@
 const express = require("express");
 const Router = express.Router();
-const Todo = require("../models/todo_model");
+const Todo = require("../models/todoModel");
 const { body } = require("express-validator");
 const {
   retrieveTodos,
@@ -27,7 +27,7 @@ const validateTodo = [
     .trim()
     .notEmpty()
     .withMessage("Deadline is required")
-    .isDate("yyyy - mm - dd")
+    .isDate("mm/dd/yyyy")
     .withMessage("Deadline must be a valid date"),
 ];
 
