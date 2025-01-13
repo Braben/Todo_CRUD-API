@@ -27,16 +27,10 @@ const validateUser = [
     .isLength({ min: 6 })
     .withMessage("Password is required and must be at least 6 characters long"),
 ];
+
+// Validate user input
 const validateUsersignin = [
   body("email").trim().isEmail().withMessage("Email is required"),
-  // Check if email already exists
-  // .custom(async (email) => {
-  //   const existingUser = await userModel.findOne({ email });
-
-  //   if (existingUser) {
-  //     Promise.resolve("User found");
-  //   }
-  // }),
   body("password")
     .trim()
     .isLength({ min: 6 })

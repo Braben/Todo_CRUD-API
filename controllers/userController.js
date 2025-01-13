@@ -1,6 +1,8 @@
 const userModel = require("../models/userModel");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 // Create a new user
 const signUpController = (req, res) => {
   //CHECK FOR ERRORS
@@ -8,8 +10,7 @@ const signUpController = (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array()[0].msg });
   }
-  //if no errors
-  //get data from body
+  //if no errors //get data from body
   const { name, email, password } = req.body;
   //hash the password
   bcrypt
@@ -70,11 +71,18 @@ const signInController = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Password Invalid" });
     }
+    // Generate a JWT token
+    const token = jwt.sign(
+      { name: user.name, email: user.email, userId: user._id },
+      "processenvJWT_SECRET", // secret key
+      { expiresIn: "1h" }
+    );
     // Successful sign-in
     res.status(200).json({
       message: "User signed in successfully",
       Name: user.name,
       Email: user.email,
+      token,
     });
   } catch (err) {
     console.error(err);
